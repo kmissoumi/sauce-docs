@@ -24,7 +24,6 @@ Each browser vendor also supplies a list of browser-specific capabilities that y
 * [Safari Capabilities](https://developer.apple.com/documentation/webkit/about_webdriver_for_safari)
 :::
 
-
 ## WebDriver W3C Capabilities (Required)
 
 Sauce Labs determines W3C sessions with the presence of `sauce:options`

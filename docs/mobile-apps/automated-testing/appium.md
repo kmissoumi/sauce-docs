@@ -43,7 +43,7 @@ The server also includes a [desktop application](http://appium.io/downloads) tha
 Here are the basic steps for creating an Appium test script for your application under test (AUT):
 
 ### 1. Set your app location
-When you write an Appium test script, the most basic component is the [capabilities object](https://wiki.saucelabs.com/pages/viewpage.action?pageId=48365693). This is where you set your test parameters, such as the mobile platform and operating system you want to test against.
+When you write an Appium test script, the most basic component is the [capabilities object](/basics/test-config-annotation/test-annotation). This is where you set your test parameters, such as the mobile platform and operating system you want to test against.
 
 Within that object, one of the [required capabilities](/dev/test-configuration-options) is the `app` capability: the path to your application (e.g., Sauce Storage, AWS, GitHub). One of the advantages of the Appium architecture is that the application you want to test can be hosted anywhere, from a local path to any other web host on the network, since the Appium server will send the commands it receives from the client to any application path you specify. Practically, you have three options. 
 
@@ -359,8 +359,7 @@ Because of the wide variations in recording technique, this beginning section om
 The following example runs a test by asserting that the login response message is equal to an expected success message:
 
 ```java
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions.assertEquals;
 
 WebElement messageElement     = driver.findElement(By.id("loginResponse"));
 String message                = messageElement.getText();
@@ -404,7 +403,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.android.AndroidDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions.assertEquals;
 public class SampleSauceTest {
 
     public static void  main() throws MalformedURLException {
@@ -418,11 +417,13 @@ public class SampleSauceTest {
         capabilities.setCapability("appiumVersion", "1.16.0");
         WebDriver driver = new AndroidDriver<WebElement>( new URL("http://SAUCE_USERNAME:SAUCE_ACCESS_KEY@ondemand.us-west-1.saucelabs.com/wd/hub"), capabilities);
 
-        WebElement emailInput = driver.findElement(By.id("fbemail"));
-        emailInput.sendKeys("SauceIsAwesome@email.com");
-        assertEquals(emailInput.getText(), "SauceIsAwesome@email.com");
-
-        driver.quit();
+        try {
+            WebElement emailInput = driver.findElement(By.id("fbemail"));
+            emailInput.sendKeys("SauceIsAwesome@email.com");
+            assertEquals(emailInput.getText(), "SauceIsAwesome@email.com");
+        } finally {
+            driver.quit();
+        }
     }
 }
 ```
